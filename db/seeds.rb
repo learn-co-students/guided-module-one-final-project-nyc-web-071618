@@ -1,3 +1,7 @@
+require 'database_cleaner'
+
+DatabaseCleaner.clean_with(:truncation)
+
 d1 = Doctor.create(name: "Dr Bob", specialization: "Dermatology", cost: 500.00)
 d2 = Doctor.create(name: "Dr Joe", specialization: "ENT", cost: 250.00)
 d3 = Doctor.create(name: "Dr Steve", specialization: "General Practitioner", cost: 53.00)
