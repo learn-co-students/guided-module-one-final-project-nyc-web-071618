@@ -51,5 +51,5 @@ end
 # a22 = Appointment.create(condition: "Skin cancer", doctor_id: 1, patient_id: 4)
 
 
-binding.pry
+# binding.pry
 0 #leave this here to ensure binding.pry isn't the last line
