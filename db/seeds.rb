@@ -46,8 +46,5 @@ a20 = Appointment.create(condition: "Tinitus", doctor_id: 6, patient_id: 9, date
 a21 = Appointment.create(condition: "Ruptured eardrum", doctor_id: 2, patient_id: 8, date_and_time: Date.new(2018,8,3))
 a22 = Appointment.create(condition: "Skin cancer", doctor_id: 1, patient_id: 4, date_and_time: Date.new(2018,8,5))
 
-
-
-
 binding.pry
 0
