@@ -10,7 +10,7 @@ class Doctor < ActiveRecord::Base
   end
 
   def schedule_conflicts(date)
-    self.schedule.include?(date)
+    self.schedule.include?(Date.new(date))
   end
   # date = Date.new(2018,8,5)
   # module DPmethods
