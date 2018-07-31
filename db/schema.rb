@@ -10,26 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180731135253) do
+ActiveRecord::Schema.define(version: 20180731170824) do
 
   create_table "appointments", force: :cascade do |t|
     t.string  "condition"
-    t.decimal "price"
-    t.boolean "paid?"
     t.integer "doctor_id"
     t.integer "patient_id"
+  end
+
+  create_table "billings", force: :cascade do |t|
+    t.integer "appointment_id"
+    t.boolean "paid?"
   end
 
   create_table "doctors", force: :cascade do |t|
     t.string  "name"
     t.string  "specialization"
-    t.decimal "cost"
+    t.integer "cost"
   end
 
   create_table "patients", force: :cascade do |t|
     t.string  "name"
     t.integer "age"
     t.string  "sex"
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.integer "appointment_id"
+    t.integer "rating"
   end
 
 end
