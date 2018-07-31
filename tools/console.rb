@@ -17,6 +17,7 @@ d7 = Doctor.create(name: "Dr Liz", specialization: "Heart Surgeon", cost: 650.00
 d8 = Doctor.create(name: "Dr Yourboi", specialization: "Free Clinic", cost: 25.00)
 d9 = Doctor.create(name: "Dr Bill", specialization: "Orthopedics", cost: 650.00)
 
+p1 = Patient.create(name: "John", age: 28, sex: "M")
 
 
 binding.pry
