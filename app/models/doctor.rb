@@ -75,11 +75,25 @@ class Doctor < ActiveRecord::Base
         return
     end
   end
-  
+
+  def self.stripname(name)
+    if name[0..6] == "doctor "
+      name.slice!(0,7)
+    elsif name[0..3] == "dr. "
+      name.slice!(0,4)
+    elsif name[0..2] == "dr "
+      name.slice!(0,3)
+    end
+    name.titleize
+  end
+
   def self.check_doctor
     puts "What is your name?"
     
-    name = gets.chomp.to_s.titleize
+    name = gets.chomp.to_s.downcase
+
+    stripname(name)
+
     doc_select = Doctor.all.find { |doctor| doctor.name.downcase == name.downcase }
     
     if doc_select == nil
