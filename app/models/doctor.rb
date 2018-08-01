@@ -2,6 +2,28 @@ class Doctor < ActiveRecord::Base
   has_many :appointments
   has_many :patients, through: :appointments
   has_many :billings, through: :appointments
+  
+  def self.create_doctor(name, spec, cost)
+    Doctor.create(name: name, specialization: spec, cost: cost)
+  end
+
+  def self.check_doctor
+    puts "What is your name?"
+    
+    name = gets.chomp.to_s
+    doc_find = Doctor.all.find { |doctor| doctor.name.downcase == name.downcase }
+    
+    if doc_find == nil
+      puts 'I see you are a new doctor, please follow the prompts to set up your profile.'
+      puts 'What is your specialization?'
+      spec = gets.chomp.to_s
+      puts 'How much do you charge per visit?'
+      cost = gets.strip.to_i
+      puts "Creating your profile"
+      create_doctor(name, spec, cost)
+    end
+  end
+
 
   def schedule
     self.appointments.map do |appts|
