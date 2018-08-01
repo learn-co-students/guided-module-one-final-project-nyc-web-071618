@@ -68,11 +68,11 @@ class Patient < ActiveRecord::Base
       self.speclist
     elsif selection == 2
       self.appointments.select do |appts|
-        appts.date_and_time > Date.today
+        appts.date_and_time <= Date.today
       end
     elsif selection == 3
       self.appointments.select do |appts|
-        appts.date_and_time <= Date.today
+        appts.date_and_time > Date.today
       end
     elsif selection == 4
       puts "billings where paid? == true"
