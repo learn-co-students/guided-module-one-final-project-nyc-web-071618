@@ -4,6 +4,7 @@ class Patient < ActiveRecord::Base
   has_many :doctors, through: :appointments
   has_many :billings, through: :appointments
 
+
   def speclist
     uniqspecs = Doctor.all.map do |doctor|
       doctor.specialization
@@ -24,7 +25,7 @@ class Patient < ActiveRecord::Base
     end
     select_doctor(docs)
   end
-    
+
   def select_doctor(docs)
     docs.each do |doc|
       puts "#{docs.index(doc) + 1}. #{doc.name}"
@@ -54,12 +55,39 @@ class Patient < ActiveRecord::Base
 
     make_appointment(condition, doc_inst.id, chosen_day)
   end
-  
+
 
   def make_appointment(condition, doctor_id, date)
     Appointment.create(condition: condition, doctor_id: doctor_id, patient_id: self.id, date_and_time: date)
   end
 
+  def patient_option_select
+
+  end
+
+  def self.check_patient
+    puts "Please provide your name, first and last."
+    input = gets.chomp
+
+    patient_find = Patient.all.find do |ps|
+      # binding.pry
+      ps.name.downcase == input.downcase
+    end
+
+    if patient_find == nil
+      puts "You appear to be a new patient!"
+      puts "How old are you?"
+      age = gets.strip
+      puts "What is your sex? (M, F, Other)"
+      sex = gets.chomp
+      Patient.create(name: input, age: age, sex: sex)
+      patient_find = Patient.all.find do |ps|
+        # binding.pry
+        ps.name.downcase == input.downcase
+      end
+    else
+      puts "Welcome back, #{input.titleize}!"
+    end
+    patient_find.patient_option_select
+  end
 end
-
-
