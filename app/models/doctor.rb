@@ -24,7 +24,9 @@ class Doctor < ActiveRecord::Base
     available_days = date_map.select do |date|
       schedule_conflicts(date)
     end
-    available_days
+    available_days.each do |day|
+      puts "#{available_days.index(day) + 1}. #{day}"
+    end
   end
 
   # date = Date.new(2018,8,5)
