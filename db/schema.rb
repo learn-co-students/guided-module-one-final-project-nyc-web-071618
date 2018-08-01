@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180731193331) do
+ActiveRecord::Schema.define(version: 2018_08_01_204427) do
 
   create_table "appointments", force: :cascade do |t|
-    t.string  "condition"
+    t.string "condition"
     t.integer "doctor_id"
     t.integer "patient_id"
-    t.date    "date_and_time"
+    t.date "date_and_time"
+    t.integer "cost"
   end
 
   create_table "billings", force: :cascade do |t|
@@ -26,15 +27,15 @@ ActiveRecord::Schema.define(version: 20180731193331) do
   end
 
   create_table "doctors", force: :cascade do |t|
-    t.string  "name"
-    t.string  "specialization"
+    t.string "name"
+    t.string "specialization"
     t.integer "cost"
   end
 
   create_table "patients", force: :cascade do |t|
-    t.string  "name"
+    t.string "name"
     t.integer "age"
-    t.string  "sex"
+    t.string "sex"
   end
 
   create_table "ratings", force: :cascade do |t|

@@ -1,8 +1,7 @@
 class Doctor < ActiveRecord::Base
   has_many :appointments
   has_many :patients, through: :appointments
-  has_many :billings, through: :appointments
-  
+
   def self.create_doctor(name, spec, cost)
     Doctor.create(name: name, specialization: spec, cost: cost)
   end
@@ -16,7 +15,7 @@ class Doctor < ActiveRecord::Base
   def schedule_appointments
     self.appointments
   end
-  
+
   def schedule_conflicts(date)
     if self.schedule.include?(date) == true
       nil
@@ -24,7 +23,7 @@ class Doctor < ActiveRecord::Base
       date
     end
   end
-  
+
   def schedule_availability
     date_map = (Date.today..Date.today + 7).map do |date|
       date
@@ -36,7 +35,7 @@ class Doctor < ActiveRecord::Base
       puts "#{available_days.index(day) + 1}. #{day}"
     end
   end
-  
+
   # date = Date.new(2018,8,5)
   # module DPmethods
   #   def check_schedule(date)
@@ -89,13 +88,13 @@ class Doctor < ActiveRecord::Base
 
   def self.check_doctor
     puts "What is your name?"
-    
+
     name = gets.chomp.to_s.downcase
 
     stripname(name)
 
     doc_select = Doctor.all.find { |doctor| doctor.name.downcase == name.downcase }
-    
+
     if doc_select == nil
       puts 'I see you are a new doctor, please follow the prompts to set up your profile.'
       puts 'What is your specialization?'
