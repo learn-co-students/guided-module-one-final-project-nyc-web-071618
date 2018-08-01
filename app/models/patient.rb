@@ -62,11 +62,26 @@ class Patient < ActiveRecord::Base
   end
 
   def patient_option_select
-    puts "Would you like to -"
-    puts "1. See past appointments"
-    puts "2. See future appointments"
-    puts "3. See bills paid"
-    puts "4. See bills pending"
+    puts "Would you like to -\n1. Make an appointment\n2. See past appointments\n3. See future appointments\n4. See bills paid\n5. See bills pending"
+    selection = gets.strip.to_i
+    if selection == 1
+      self.speclist
+    elsif selection == 2
+      self.appointments.select do |appts|
+        appts.date_and_time > Date.today
+      end
+    elsif selection == 3
+      self.appointments.select do |appts|
+        appts.date_and_time <= Date.today
+      end
+    elsif selection == 4
+      puts "billings where paid? == true"
+    elsif selection == 5
+      puts "billings where paid? == false"
+    else
+      puts "Please select again"
+      self.patient_option_select
+    end
   end
 
   def self.check_patient
