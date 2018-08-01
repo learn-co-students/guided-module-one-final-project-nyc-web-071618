@@ -10,12 +10,23 @@ class Doctor < ActiveRecord::Base
   end
 
   def schedule_conflicts(date)
-    if self.schedule.include?(Date.parse(date)) == true
-      puts "Date Unavailable" 
+    if self.schedule.include?(date) == true
+      nil
     else
-      puts "No Conflict"
+      date
     end
   end
+
+  def schedule_availability
+    date_map = (Date.today..Date.today + 7).map do |date|
+      date
+    end
+    available_days = date_map.select do |date|
+      schedule_conflicts(date)
+    end
+    available_days
+  end
+
   # date = Date.new(2018,8,5)
   # module DPmethods
   #   def check_schedule(date)
