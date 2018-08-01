@@ -17,8 +17,8 @@ class Patient < ActiveRecord::Base
   def paybills
     puts 'Which bill would you like to pay for?'
 
-    self.unpaid_appointments.each do |appts|
-      puts "#{self.appointments.index(appts)}. #{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Owed: $#{appts.doctor.cost}"
+    unpaid_appointments.each do |appts|
+      puts "#{self.unpaid_appointments.index(appts) + 1 }. #{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Owed: $#{appts.doctor.cost}"
     end
 
     input = gets.strip.to_i
