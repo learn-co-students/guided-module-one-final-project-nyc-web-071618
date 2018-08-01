@@ -52,7 +52,7 @@ class Patient < ActiveRecord::Base
 
     condition = gets.chomp.to_s
 
-    make_appointment(condition, doc_inst, chosen_day)
+    make_appointment(condition, doc_inst.id, chosen_day)
   end
   
 
