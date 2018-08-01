@@ -89,7 +89,6 @@ class Patient < ActiveRecord::Base
     input = gets.chomp
 
     patient_find = Patient.all.find do |ps|
-      # binding.pry
       ps.name.downcase == input.downcase
     end
 
@@ -101,7 +100,6 @@ class Patient < ActiveRecord::Base
       sex = gets.chomp
       Patient.create(name: input, age: age, sex: sex)
       patient_find = Patient.all.find do |ps|
-        # binding.pry
         ps.name.downcase == input.downcase
       end
     else
