@@ -7,30 +7,12 @@ class Doctor < ActiveRecord::Base
     Doctor.create(name: name, specialization: spec, cost: cost)
   end
 
-  def self.check_doctor
-    puts "What is your name?"
-    
-    name = gets.chomp.to_s
-    doc_find = Doctor.all.find { |doctor| doctor.name.downcase == name.downcase }
-    
-    if doc_find == nil
-      puts 'I see you are a new doctor, please follow the prompts to set up your profile.'
-      puts 'What is your specialization?'
-      spec = gets.chomp.to_s
-      puts 'How much do you charge per visit?'
-      cost = gets.strip.to_i
-      puts "Creating your profile"
-      create_doctor(name, spec, cost)
-    end
-  end
-
-
   def schedule
     self.appointments.map do |appts|
       appts.date_and_time
     end
   end
-
+  
   def schedule_conflicts(date)
     if self.schedule.include?(date) == true
       nil
@@ -38,7 +20,7 @@ class Doctor < ActiveRecord::Base
       date
     end
   end
-
+  
   def schedule_availability
     date_map = (Date.today..Date.today + 7).map do |date|
       date
@@ -50,7 +32,7 @@ class Doctor < ActiveRecord::Base
       puts "#{available_days.index(day) + 1}. #{day}"
     end
   end
-
+  
   # date = Date.new(2018,8,5)
   # module DPmethods
   #   def check_schedule(date)
@@ -61,4 +43,27 @@ class Doctor < ActiveRecord::Base
   #     end
   #   end
   # end
+  def doc_option_select
+    puts "What are you here for?\n1. Your schedule\n2. Your rating\n3.Your income"
+  end
+  
+  def self.check_doctor
+    puts "What is your name?"
+    
+    name = gets.chomp.to_s.titleize
+    doc_select = Doctor.all.find { |doctor| doctor.name.downcase == name.downcase }
+    
+    if doc_select == nil
+      puts 'I see you are a new doctor, please follow the prompts to set up your profile.'
+      puts 'What is your specialization?'
+      spec = gets.chomp.to_s
+      puts 'How much do you charge per visit?'
+      cost = gets.strip.to_i
+      puts "Creating your profile"
+      create_doctor(name, spec, cost)
+      doc_select = Doctor.all.find { |doctor| doctor.name.downcase == name.downcase }
+    end
+
+    doc_select.doc_option_select
+  end
 end

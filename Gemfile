@@ -6,3 +6,4 @@ gem "sqlite3"
 gem 'database_cleaner'
 gem "pry"
 gem "require_all"
+gem "titleize"
