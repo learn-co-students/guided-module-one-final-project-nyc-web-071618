@@ -10,7 +10,7 @@ class Doctor < ActiveRecord::Base
   end
 
   def schedule_conflicts(date)
-    if self.schedule.include?(Date.parse(date))== true
+    if self.schedule.include?(Date.parse(date)) == true
       puts "Date Unavailable" 
     else
       puts "No Conflict"

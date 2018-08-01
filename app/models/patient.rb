@@ -5,7 +5,9 @@ class Patient < ActiveRecord::Base
   has_many :billings, through: :appointments
 
   def choose_specialization(specialization)
-    doctor
+    Doctor.all.select do |doctor|
+      doctor.specialization == specialization
+    end
   end
 
   def make_appointment(condition, doctor_id, date)
