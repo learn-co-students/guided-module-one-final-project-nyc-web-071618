@@ -12,6 +12,10 @@ class Doctor < ActiveRecord::Base
       appts.date_and_time
     end
   end
+
+  def schedule_appointments
+    self.appointments
+  end
   
   def schedule_conflicts(date)
     if self.schedule.include?(date) == true
@@ -43,12 +47,32 @@ class Doctor < ActiveRecord::Base
   #     end
   #   end
   # end
+  def option_reset
+    40.times do print "-" end
+    print "\n"
+    self.doc_option_select
+  end
+
   def doc_option_select
-    puts "What are you here for?\n1. Your schedule\n2. Your rating\n3. Your income"
+    puts "What are you here for?\n1. Your upcoming appointments\n2. Your past appointments\n3. Your income\n4. Your rating\n5. Back to start"
     input = gets.strip.to_i
 
     if input == 1
-      self.schedule
+      self.appointments.each do |appt|
+        if appt.date_and_time >= Date.today
+          puts "#{appt.date_and_time} => Patient: #{appt.patient.name}, Condition: #{appt.condition}"
+        end
+      end
+      option_reset
+    elsif input == 2
+      self.appointments.each do |appt|
+        if appt.date_and_time < Date.today
+         puts "#{appt.date_and_time} => Patient: #{appt.patient.name}, Condition: #{appt.condition}"
+        end
+      end
+      option_reset
+      elsif input == 5
+        return
     end
   end
   

@@ -45,6 +45,7 @@ a19 = Appointment.create(condition: "Collapsed valve", doctor_id: 7, patient_id:
 a20 = Appointment.create(condition: "Tinitus", doctor_id: 6, patient_id: 9, date_and_time: Date.new(2018,8,2))
 a21 = Appointment.create(condition: "Ruptured eardrum", doctor_id: 2, patient_id: 8, date_and_time: Date.new(2018,8,3))
 a22 = Appointment.create(condition: "Skin cancer", doctor_id: 1, patient_id: 4, date_and_time: Date.new(2018,8,5))
+a23 = Appointment.create(condition: "Lifted too much", doctor_id: 8, patient_id: 4, date_and_time: Date.new(2018,7,3))
 
 binding.pry
 0
