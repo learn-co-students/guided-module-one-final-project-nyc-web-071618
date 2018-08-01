@@ -44,7 +44,12 @@ class Doctor < ActiveRecord::Base
   #   end
   # end
   def doc_option_select
-    puts "What are you here for?\n1. Your schedule\n2. Your rating\n3.Your income"
+    puts "What are you here for?\n1. Your schedule\n2. Your rating\n3. Your income"
+    input = gets.strip.to_i
+
+    if input == 1
+      self.schedule
+    end
   end
   
   def self.check_doctor
