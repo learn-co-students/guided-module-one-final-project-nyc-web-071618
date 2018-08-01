@@ -26,7 +26,7 @@ class Patient < ActiveRecord::Base
     uappt.write_attribute(:paid?, true)
     uappt.save
 
-    puts "Bill paid"
+    puts "Bill paid."
     option_reset
   end
 
