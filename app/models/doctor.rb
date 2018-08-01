@@ -10,7 +10,11 @@ class Doctor < ActiveRecord::Base
   end
 
   def schedule_conflicts(date)
-    self.schedule.include?(Date.parse(date))
+    if self.schedule.include?(Date.parse(date))== true
+      puts "Date Unavailable" 
+    else
+      puts "No Conflict"
+    end
   end
   # date = Date.new(2018,8,5)
   # module DPmethods
@@ -22,5 +26,4 @@ class Doctor < ActiveRecord::Base
   #     end
   #   end
   # end
-
 end
