@@ -4,6 +4,11 @@ class Patient < ActiveRecord::Base
   has_many :doctors, through: :appointments
   has_many :billings, through: :appointments
 
+  def option_reset
+    40.times do print "-" end
+    print "\n"
+    self.patient_option_select
+  end
 
   def speclist
     uniqspecs = Doctor.all.map do |doctor|
@@ -62,22 +67,34 @@ class Patient < ActiveRecord::Base
   end
 
   def patient_option_select
-    puts "Would you like to -\n1. Make an appointment\n2. See past appointments\n3. See future appointments\n4. See bills paid\n5. See bills pending"
+    puts "Would you like to -\n1. Make an appointment\n2. See past appointments\n3. See future appointments\n4. See bills paid\n5. See bills pending\n6. Exit this menu"
     selection = gets.strip.to_i
     if selection == 1
       self.speclist
+    option_reset
     elsif selection == 2
       self.appointments.select do |appts|
-        appts.date_and_time <= Date.today
+        binding.pry
+        if appts.date_and_time <= Date.today
+        puts "#{appts.date_and_time} => Doctor: #{appts.doctor.name}, Condition: #{appts.condition}"
+        end
+      option_reset
       end
     elsif selection == 3
       self.appointments.select do |appts|
-        appts.date_and_time > Date.today
+        if appts.date_and_time > Date.today
+        puts "#{appts.date_and_time} => Doctor: #{appts.doctor.name}, Condition: #{appts.condition}"
+        end
+        option_reset
       end
     elsif selection == 4
       puts "billings where paid? == true"
+      option_reset
     elsif selection == 5
       puts "billings where paid? == false"
+      option_reset
+    elsif selection == 6
+      puts "You're out!"
     else
       puts "Please select again"
       self.patient_option_select
