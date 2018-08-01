@@ -52,6 +52,13 @@ class Doctor < ActiveRecord::Base
     self.doc_option_select
   end
 
+  def income
+    income_array = self.appointments.select do |appt|
+      appt.paid? == true
+    end
+    income_array.sum
+  end
+
   def doc_option_select
     puts "What are you here for?\n1. Your upcoming appointments\n2. Your past appointments\n3. Your income\n4. Your rating\n5. Back to start"
     input = gets.strip.to_i
@@ -70,8 +77,11 @@ class Doctor < ActiveRecord::Base
         end
       end
       option_reset
-      elsif input == 5
-        return
+    elsif input == 3
+      self.income
+    elsif input == 4
+      puts "Stars, stars, stars!!!"
+    elsif input == 5
     end
   end
 
