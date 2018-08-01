@@ -74,19 +74,19 @@ class Patient < ActiveRecord::Base
     option_reset
     elsif selection == 2
       self.appointments.select do |appts|
-        binding.pry
+        # binding.pry
         if appts.date_and_time <= Date.today
         puts "#{appts.date_and_time} => Doctor: #{appts.doctor.name}, Condition: #{appts.condition}"
         end
-      option_reset
       end
+      option_reset
     elsif selection == 3
       self.appointments.select do |appts|
         if appts.date_and_time > Date.today
         puts "#{appts.date_and_time} => Doctor: #{appts.doctor.name}, Condition: #{appts.condition}"
         end
-        option_reset
       end
+      option_reset
     elsif selection == 4
       puts "billings where paid? == true"
       option_reset
