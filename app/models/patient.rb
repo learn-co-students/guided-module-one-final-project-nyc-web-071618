@@ -33,7 +33,7 @@ class Patient < ActiveRecord::Base
 
   def select_doctor(docs)
     docs.each do |doc|
-      puts "#{docs.index(doc) + 1}. #{doc.name}"
+      puts "#{docs.index(doc) + 1}: Dr. #{doc.name}"
     end
 
     input = gets.strip.to_i
@@ -63,7 +63,7 @@ class Patient < ActiveRecord::Base
 
 
   def make_appointment(condition, doctor_id, date)
-    Appointment.create(condition: condition, doctor_id: doctor_id, patient_id: self.id, date_and_time: date)
+    Appointment.create(condition: condition, doctor_id: doctor_id, patient_id: self.id, date_and_time: date, paid?: false)
   end
 
   def patient_option_select
@@ -76,17 +76,17 @@ class Patient < ActiveRecord::Base
       self.appointments.select do |appts|
         binding.pry
         if appts.date_and_time <= Date.today
-        puts "#{appts.date_and_time} => Doctor: #{appts.doctor.name}, Condition: #{appts.condition}"
+        puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}"
         end
       option_reset
       end
     elsif selection == 3
       self.appointments.select do |appts|
         if appts.date_and_time > Date.today
-        puts "#{appts.date_and_time} => Doctor: #{appts.doctor.name}, Condition: #{appts.condition}"
+        puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}"
         end
-        option_reset
       end
+      option_reset
     elsif selection == 4
       puts "billings where paid? == true"
       option_reset
