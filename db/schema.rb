@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2018_08_01_204427) do
     t.integer "doctor_id"
     t.integer "patient_id"
     t.date "date_and_time"
-    t.integer "cost"
+    t.boolean "paid?"
   end
 
   create_table "billings", force: :cascade do |t|
