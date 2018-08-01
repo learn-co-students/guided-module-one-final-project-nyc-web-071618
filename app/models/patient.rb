@@ -37,9 +37,23 @@ class Patient < ActiveRecord::Base
     doc_inst = docs.find do |doc|
       doc == chosen_doctor
     end
-    puts doc_inst.name
+    select_date(doc_inst)
   end
 
+  def select_date(doc_inst)
+    schedule_array = doc_inst.schedule_availability
+    puts "Select the date you would like"
+
+    input = gets.strip.to_i
+
+    chosen_day = schedule_array[input - 1]
+
+    puts "Why are you visiting?"
+
+    condition = gets.chomp.to_s
+
+    make_appointment(condition, doc_inst, chosen_day)
+  end
   
 
   def make_appointment(condition, doctor_id, date)
