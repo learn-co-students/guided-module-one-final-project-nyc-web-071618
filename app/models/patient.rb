@@ -2,11 +2,43 @@ class Patient < ActiveRecord::Base
   # include DPmethods
   has_many :appointments
   has_many :doctors, through: :appointments
-
+  
   def option_reset
     40.times do print "-" end
     print "\n"
     self.patient_option_select
+  end
+  def unpaid_appointments
+    self.appointments.select do |appts|
+      appts.paid? == false && appts.date_and_time <= Date.today
+    end
+  end
+  
+  def paybills
+    puts 'Which bill would you like to pay for?'
+
+    input = gets.strip.to_i
+    uappt = unpaid_appointments[input - 1]
+    uappt.write_attribute(:paid?, true)
+    uappt.save
+
+    puts "Bill paid"
+    option_reset
+  end
+
+  def choose_to_pay
+    puts 'Would you like to pay now? (Y/N)'
+
+    input = gets.chomp.to_s.upcase
+
+    if input == 'YES' || input == 'Y'
+      paybills
+    elsif input == 'NO' || input == 'N'
+      option_reset
+    else 
+      puts 'Invalid Option'
+      choose_to_pay
+    end
   end
 
   def speclist
@@ -87,11 +119,23 @@ class Patient < ActiveRecord::Base
       end
       option_reset
     elsif selection == 4
-      puts "billings where paid? == true"
+      puts "Paid Bills"
+      30.times do print "-" end
+        print "\n"
+      self.appointments.each do |appts|
+        if appts.paid? == true
+          puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Paid: $#{appts.doctor.cost}"
+        end
+      end
       option_reset
     elsif selection == 5
-      puts "billings where paid? == false"
-      option_reset
+      puts "Unpaid Bills"
+      30.times do print "-" end
+        print "\n"
+        self.unpaid_appointments.each do |appts|
+          puts "#{self.appointments.index(appts)}. #{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Owed: $#{appts.doctor.cost}"
+        end
+      choose_to_pay
     elsif selection == 6
       puts "You're out!"
     else
