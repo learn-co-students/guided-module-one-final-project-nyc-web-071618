@@ -56,7 +56,10 @@ class Doctor < ActiveRecord::Base
     income_array = self.appointments.select do |appt|
       appt.paid? == true
     end
-    income_array.sum
+    payments = income_array.map do |appt|
+      appt.doctor.cost
+    end
+    payments.sum
   end
 
   def doc_option_select
@@ -78,9 +81,16 @@ class Doctor < ActiveRecord::Base
       end
       option_reset
     elsif input == 3
-      self.income
+      # binding.pry
+      if self.income == 0
+        puts "You haven't made any money. Time to work harder!"
+      else
+        puts "$#{self.income}"
+      end
+      option_reset
     elsif input == 4
       puts "Stars, stars, stars!!!"
+      option_reset
     elsif input == 5
     end
   end
