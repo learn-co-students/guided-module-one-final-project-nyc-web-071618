@@ -103,7 +103,7 @@ class Doctor < ActiveRecord::Base
     elsif name[0..2] == "dr "
       name.slice!(0,3)
     end
-    name.titleize
+    name
   end
 
   def self.check_doctor
@@ -111,14 +111,15 @@ class Doctor < ActiveRecord::Base
 
     name = gets.chomp.to_s.downcase
 
-    stripname(name)
+    name = stripname(name)
+    name = name.titleize
 
     doc_select = Doctor.all.find { |doctor| doctor.name.downcase == name.downcase }
 
     if doc_select == nil
       puts 'I see you are a new doctor, please follow the prompts to set up your profile.'
       puts 'What is your specialization?'
-      spec = gets.chomp.to_s
+      spec = gets.chomp.to_s.titleize
       puts 'How much do you charge per visit?'
       cost = gets.strip.to_i
       puts "Creating your profile"
