@@ -62,7 +62,11 @@ class Patient < ActiveRecord::Base
   end
 
   def patient_option_select
-
+    puts "Would you like to -"
+    puts "1. See past appointments"
+    puts "2. See future appointments"
+    puts "3. See bills paid"
+    puts "4. See bills pending"
   end
 
   def self.check_patient
