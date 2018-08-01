@@ -9,5 +9,5 @@ if input.start_with?("d")
 elsif input.start_with?('p') 
   Patient.check_patient
 else
-  puts "Why can't you spell anything right?"
+  puts "Why can't you spell anything remotely corrently right?"
 end
