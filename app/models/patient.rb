@@ -17,6 +17,10 @@ class Patient < ActiveRecord::Base
   def paybills
     puts 'Which bill would you like to pay for?'
 
+    unpaid_appointments.each do |appts|
+      puts "#{self.unpaid_appointments.index(appts) + 1 }. #{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Owed: $#{appts.doctor.cost}"
+    end
+
     input = gets.strip.to_i
     uappt = unpaid_appointments[input - 1]
     uappt.write_attribute(:paid?, true)
@@ -133,7 +137,7 @@ class Patient < ActiveRecord::Base
       30.times do print "-" end
         print "\n"
         self.unpaid_appointments.each do |appts|
-          puts "#{self.appointments.index(appts)}. #{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Owed: $#{appts.doctor.cost}"
+          puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Owed: $#{appts.doctor.cost}"
         end
       choose_to_pay
     elsif selection == 6
