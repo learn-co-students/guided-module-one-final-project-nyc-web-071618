@@ -1,6 +1,7 @@
 class Doctor < ActiveRecord::Base
   has_many :appointments
   has_many :patients, through: :appointments
+  has_many :ratings, through: :appointments
 
   def self.create_doctor(name, spec, cost)
     Doctor.create(name: name, specialization: spec, cost: cost)
@@ -128,5 +129,19 @@ class Doctor < ActiveRecord::Base
     end
 
     doc_select.doc_option_select
+  end
+
+  def doc_rating_avg
+    if self.ratings.length == 0
+      puts "You don't have any ratings."
+    else
+      ratings_array = self.ratings.map do |rtgs|
+      # binding.pry
+        rtgs.rating.to_i
+      end
+      ratings_avg = ratings_array.inject{ |sum, el| sum + el }.to_f / ratings_array.size
+      puts "Your rating average is #{ratings_avg}."
+    end
+
   end
 end
