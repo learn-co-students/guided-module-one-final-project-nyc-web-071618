@@ -1,5 +1,4 @@
 class Rating < ActiveRecord::Base
-  belongs_to :appointments
-  has_many :doctors, through: :appointments
-  has_many :patients, through: :appointments
+  belongs_to :appointment
+  has_one :doctor, through: :appointments
 end
