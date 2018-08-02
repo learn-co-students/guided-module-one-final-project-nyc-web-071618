@@ -201,7 +201,7 @@ class Patient < ActiveRecord::Base
       puts "You're out!"
       return
     else
-      puts "Please select again"
+      puts "Please select a valid option."
       self.patient_option_select
     end
   end

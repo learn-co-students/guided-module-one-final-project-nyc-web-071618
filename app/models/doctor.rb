@@ -85,7 +85,7 @@ class Doctor < ActiveRecord::Base
       if self.income == 0
         puts "You haven't made any money. Time to work harder!"
       else
-        puts "$#{self.income}"
+        puts "You've netted: $#{self.income}"
       end
       option_reset
     elsif input == 4
