@@ -45,6 +45,13 @@ class Patient < ActiveRecord::Base
     end
   end
 
+  def leave_rating
+    puts 'For which appointment would you like to leave a rating?'
+    ratings = Rating.all.map |rating|
+      rating.appointment.patient == self
+    end
+  end
+
   def speclist
     uniqspecs = Doctor.all.map do |doctor|
       doctor.specialization
