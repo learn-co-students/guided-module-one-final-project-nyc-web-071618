@@ -68,17 +68,23 @@ class Doctor < ActiveRecord::Base
     input = gets.strip.to_i
 
     if input == 1
-      self.appointments.each do |appt|
+      count = self.appointments.select do |appt|
         if appt.date_and_time >= Date.today
           puts "#{appt.date_and_time} => Patient: #{appt.patient.name}, Condition: #{appt.condition}"
         end
       end
+      if count.count == 0
+        puts 'You have no upcoming appointments'
+      end
       option_reset
     elsif input == 2
-      self.appointments.each do |appt|
+      count = self.appointments.select do |appt|
         if appt.date_and_time < Date.today
          puts "#{appt.date_and_time} => Patient: #{appt.patient.name}, Condition: #{appt.condition}"
         end
+      end
+      if count.count == 0
+        puts 'You have no past appointments'
       end
       option_reset
     elsif input == 3
@@ -90,7 +96,7 @@ class Doctor < ActiveRecord::Base
       end
       option_reset
     elsif input == 4
-      puts "Stars, stars, stars!!!"
+      self.doc_rating_avg
       option_reset
     elsif input == 5
     end

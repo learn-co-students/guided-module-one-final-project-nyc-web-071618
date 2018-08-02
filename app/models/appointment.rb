@@ -4,7 +4,7 @@ class Appointment < ActiveRecord::Base
   has_one :rating
   
   def create_rating(rating)
-    binding.pry
+    # binding.pry
     Rating.create(appointment_id: self.id, rating: rating)
   end
 end

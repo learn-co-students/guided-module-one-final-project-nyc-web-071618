@@ -12,7 +12,7 @@ loop do
   elsif input.start_with?('e')
     break
   else
-    puts "Why can't you spell anything remotely corrently right?"
+    puts "Invalid option"
 
   end
 end
