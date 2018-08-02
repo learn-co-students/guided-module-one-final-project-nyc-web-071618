@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_204427) do
+ActiveRecord::Schema.define(version: 2018_08_02_131801) do
 
   create_table "appointments", force: :cascade do |t|
     t.string "condition"
@@ -18,12 +18,6 @@ ActiveRecord::Schema.define(version: 2018_08_01_204427) do
     t.integer "patient_id"
     t.date "date_and_time"
     t.boolean "paid?"
-  end
-
-  create_table "billings", force: :cascade do |t|
-    t.integer "appointment_id"
-    t.boolean "paid?"
-    t.integer "cost"
   end
 
   create_table "doctors", force: :cascade do |t|

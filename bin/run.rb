@@ -7,7 +7,7 @@ loop do
 
   if input.start_with?("d")
     Doctor.check_doctor
-  elsif input.start_with?('p') 
+  elsif input.start_with?('p')
     Patient.check_patient
   elsif input.start_with?('e')
     break
