@@ -13,7 +13,17 @@ class Patient < ActiveRecord::Base
       appts.paid? == false && appts.date_and_time <= Date.today
     end
   end
-  
+
+  def getnumber(max)
+    input = gets.strip.to_i
+    if input.between?(1, max)
+      return input
+    else
+      puts 'THAT\'S THE WRONG NUMBER'
+      getnumber(max)
+    end
+  end
+
   def paybills
     puts 'Which bill would you like to pay for?'
 
@@ -21,10 +31,10 @@ class Patient < ActiveRecord::Base
       puts "#{self.unpaid_appointments.index(appts) + 1 }. #{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Owed: $#{appts.doctor.cost}"
     end
 
-    input = gets.strip.to_i
-    uappt = unpaid_appointments[input - 1]
-    uappt.write_attribute(:paid?, true)
-    uappt.save
+      getnumber(unpaid_appointments.count)
+      uappt = unpaid_appointments[input - 1]
+      uappt.write_attribute(:paid?, true)
+      uappt.save
 
     puts "Bill paid."
     option_reset
@@ -48,7 +58,6 @@ class Patient < ActiveRecord::Base
   def leave_rating
     puts 'For which appointment would you like to leave a rating?'
     ratings = Rating.all.select do |rating|
-      # binding.pry
       rating.appointment.patient_id == self.id
     end
     unrated = self.appointments.select do |appts|
@@ -63,15 +72,13 @@ class Patient < ActiveRecord::Base
         puts "#{index + 1}. #{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}"
       end
   
-      input = gets.strip.to_i
+      input = getnumber(unrated.count)
   
       puts 'Leave a rating 1-10'
   
-      intrate = gets.strip.to_i
-      if (input) <= unrated.count
-        unrated[input-1].create_rating(intrate)
-      end
-  
+      intrate = getnumber(10)
+      unrated[input-1].create_rating(intrate)
+      
       puts 'Rating submitted'
   
       option_reset
@@ -103,21 +110,16 @@ class Patient < ActiveRecord::Base
         i += 1
       end
     end
-    future_appointments =self.appointments.select do |appts|
+    future_appointments = self.appointments.select do |appts|
       appts.date_and_time > Date.today
     end
     cancel_appointment_continuted(future_appointments)
   end
   def cancel_appointment_continuted(future_appointments)
-    input = gets.strip.to_i
-    if input > future_appointments.length
-      puts 'Invalid option, try again'
-      cancel_appointment_continuted(future_appointments)
-    else
+    input = getnumber(future_appointments.count)
       future_appointments[input - 1].delete
       puts 'Appointment cancelled'
       option_reset
-    end
   end
   
   def choose_to_cancel
@@ -146,7 +148,7 @@ class Patient < ActiveRecord::Base
   end
 
   def select_spec(uniqspecs)
-    input = gets.strip.to_i
+    input = getnumber(uniqspecs.count)
 
     chosen_spec = uniqspecs[input - 1]
 
@@ -161,7 +163,7 @@ class Patient < ActiveRecord::Base
       puts "#{docs.index(doc) + 1}: Dr. #{doc.name}"
     end
 
-    input = gets.strip.to_i
+    input = getnumber(docs.count)
 
     chosen_doctor = docs[input - 1]
 
@@ -175,7 +177,7 @@ class Patient < ActiveRecord::Base
     schedule_array = doc_inst.schedule_availability
     puts "Select the date you would like"
 
-    input = gets.strip.to_i
+    input = getnumber(schedule_array.count)
 
     chosen_day = schedule_array[input - 1]
 
@@ -193,11 +195,11 @@ class Patient < ActiveRecord::Base
 
   def patient_option_select
     puts "Would you like to -\n1. Make an appointment\n2. See past visits\n3. See upcoming appointments\n4. See bills paid\n5. See bills pending\n6. Exit this menu"
-    selection = gets.strip.to_i
-    if selection == 1
+    input = getnumber(6)
+    if input == 1
       self.speclist
     option_reset
-    elsif selection == 2
+    elsif input == 2
       count = self.appointments.map do |appts|
         if appts.date_and_time <= Date.today
           puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}"
@@ -207,7 +209,7 @@ class Patient < ActiveRecord::Base
         puts "You have no past visits."
       end
       option_reset
-    elsif selection == 3
+    elsif input == 3
       count = self.appointments.map do |appts|
         if appts.date_and_time > Date.today
         puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}"
@@ -219,7 +221,7 @@ class Patient < ActiveRecord::Base
       else
         choose_to_cancel
       end
-    elsif selection == 4
+    elsif input == 4
       puts "Paid Bills"
       30.times do print "-" end
         print "\n"
@@ -234,21 +236,21 @@ class Patient < ActiveRecord::Base
       else
         choose_to_rate
       end
-    elsif selection == 5
+    elsif input == 5
       puts "Unpaid Bills"
       30.times do print "-" end
         print "\n"
         unpaid_stuff = self.unpaid_appointments.map do |appts|
           puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Owed: $#{appts.doctor.cost}"
         end
-        # binding.pry
+        
       if unpaid_stuff.count == 0
         puts "You have no bills to pay."
         option_reset
       else
         choose_to_pay
       end
-    elsif selection == 6
+    elsif input == 6
       puts "You're out!"
       return
     else

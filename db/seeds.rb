@@ -47,9 +47,7 @@ a21 = Appointment.create(condition: "Ruptured eardrum", doctor_id: 2, patient_id
 a22 = Appointment.create(condition: "Skin cancer", doctor_id: 1, patient_id: 4, date_and_time: Date.new(2018,8,5), paid?: false)
 a23 = Appointment.create(condition: "Lifted too much", doctor_id: 8, patient_id: 4, date_and_time: Date.new(2018,7,3), paid?: false)
 
-r1 = Rating.create(appointment_id: 1, rating: 5)
-r2 = Rating.create(appointment_id: 6, rating: 1)
-r3 = Rating.create(appointment_id: 4, rating: 2)
+
 
 binding.pry
 0
