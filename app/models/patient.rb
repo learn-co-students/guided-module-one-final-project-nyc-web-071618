@@ -47,8 +47,49 @@ class Patient < ActiveRecord::Base
 
   def leave_rating
     puts 'For which appointment would you like to leave a rating?'
-    ratings = Rating.all.map |rating|
-      rating.appointment.patient == self
+    ratings = Rating.all.select do |rating|
+      binding.pry
+      rating.appointment.patient_id == self.id
+    end
+    unrated = self.appointments.select do |appts|
+      appts.paid? == true && ratings.any? { |rating| rating.appointment == appts } == false
+    end
+
+    if unrated.count == 0
+      puts "You have rated all your appointments."
+      option_reset
+    else
+      unrated.each_with_index do |appts, index|
+        puts "#{index + 1}. #{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}"
+      end
+  
+      input = gets.strip.to_i
+  
+      puts 'Leave a rating 1-10'
+  
+      intrate = gets.strip.to_i
+      if (input) <= unrated.count
+        unrated[input-1].create_rating(intrate)
+      end
+  
+      puts 'Rating submitted'
+  
+      option_reset
+    end
+  end
+
+  def choose_to_rate
+    puts 'Would you like to leave a rating?'
+
+    input = gets.chomp.to_s.upcase
+
+    if input == 'YES' || input == 'Y'
+      leave_rating
+    elsif input == 'NO' || input == 'N'
+      option_reset
+    else 
+      puts 'Invalid Option'
+      choose_to_rate
     end
   end
 
@@ -116,9 +157,8 @@ class Patient < ActiveRecord::Base
     option_reset
     elsif selection == 2
       self.appointments.select do |appts|
-        # binding.pry
         if appts.date_and_time <= Date.today
-        puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}"
+          puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}"
         end
       end
       option_reset
@@ -133,22 +173,33 @@ class Patient < ActiveRecord::Base
       puts "Paid Bills"
       30.times do print "-" end
         print "\n"
-      self.appointments.each do |appts|
+      paid_stuff = self.appointments.select do |appts|
         if appts.paid? == true
           puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Paid: $#{appts.doctor.cost}"
         end
       end
-      option_reset
+      if paid_stuff.count == 0
+        puts "You have no bills paid."
+        option_reset
+      else
+        choose_to_rate
+      end
     elsif selection == 5
       puts "Unpaid Bills"
       30.times do print "-" end
         print "\n"
-        self.unpaid_appointments.each do |appts|
+        unpaid_stuff = self.unpaid_appointments.select do |appts|
           puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Owed: $#{appts.doctor.cost}"
         end
-      choose_to_pay
+      if unpaid_stuff.count == 0
+        puts "You have no bills to pay."
+        option_reset
+      else
+        choose_to_pay
+      end
     elsif selection == 6
       puts "You're out!"
+      return
     else
       puts "Please select again"
       self.patient_option_select
