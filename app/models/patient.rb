@@ -24,8 +24,18 @@ class Patient < ActiveRecord::Base
     end
   end
 
+  def self.getnumber(max)
+    input = gets.strip.to_i
+    if input.between?(1, max)
+      return input
+    else
+      puts 'That is not a valid option'
+      getnumber(max)
+    end
+  end
+
   def getstring
-    input = gets.chomp.to_s.gsub(/[^a-zA-Z]/, "")
+    input = gets.chomp.to_s.gsub(/[^a-zA-Z\s]/, "")
     if input.class == String && !input.empty?
       return input 
     else
@@ -34,7 +44,7 @@ class Patient < ActiveRecord::Base
     end
   end
   def self.getstring
-    input = gets.chomp.to_s.gsub(/[^a-zA-Z]/, "")
+    input = gets.chomp.to_s.gsub(/[^a-zA-Z\s]/, "")
     if input.class == String && !input.empty?
       return input 
     else
@@ -220,7 +230,7 @@ class Patient < ActiveRecord::Base
     option_reset
     elsif input == 2
       count = self.appointments.map do |appts|
-        if appts.date_and_time <= Date.today
+        if appts.date_and_time < Date.today
           puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}"
         end
       end
@@ -230,7 +240,7 @@ class Patient < ActiveRecord::Base
       option_reset
     elsif input == 3
       count = self.appointments.map do |appts|
-        if appts.date_and_time > Date.today
+        if appts.date_and_time >= Date.today
         puts "#{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}"
         end
       end
@@ -289,12 +299,12 @@ class Patient < ActiveRecord::Base
     if patient_find == nil
       puts "You appear to be a new patient!"
       puts "How old are you?"
-      age = getnumber
+      age = getnumber(150)
       puts "What is your sex? (M, F, Other)"
       sex = getstring
       Patient.create(name: input, age: age, sex: sex)
       patient_find = Patient.all.find do |ps|
-        ps.name.downcase == input.downcase
+        ps.name.downcase == input.downcase  
       end
     else
       puts "Welcome back, #{input.titleize}!"
