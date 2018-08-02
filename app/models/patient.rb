@@ -50,7 +50,7 @@ class Patient < ActiveRecord::Base
       puts "#{self.unpaid_appointments.index(appts) + 1 }. #{appts.date_and_time} => Doctor: Dr. #{appts.doctor.name}, Condition: #{appts.condition}, Owed: $#{appts.doctor.cost}"
     end
 
-      getnumber(unpaid_appointments.count)
+      input = getnumber(unpaid_appointments.count)
       uappt = unpaid_appointments[input - 1]
       uappt.write_attribute(:paid?, true)
       uappt.save
