@@ -1,6 +1,7 @@
 class Doctor < ActiveRecord::Base
   has_many :appointments
   has_many :patients, through: :appointments
+  has_many :ratings, through: :appointments
 
   def self.create_doctor(name, spec, cost)
     Doctor.create(name: name, specialization: spec, cost: cost)
