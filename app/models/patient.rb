@@ -19,8 +19,27 @@ class Patient < ActiveRecord::Base
     if input.between?(1, max)
       return input
     else
-      puts 'THAT\'S THE WRONG NUMBER'
+      puts 'That is not a valid option'
       getnumber(max)
+    end
+  end
+
+  def getstring
+    input = gets.chomp.to_s.gsub(/[^a-zA-Z]/, "")
+    if input.class == String && !input.empty?
+      return input 
+    else
+      puts "Not a string" 
+      getstring
+    end
+  end
+  def self.getstring
+    input = gets.chomp.to_s.gsub(/[^a-zA-Z]/, "")
+    if input.class == String && !input.empty?
+      return input 
+    else
+      puts "Not a string" 
+      getstring
     end
   end
 
@@ -43,7 +62,7 @@ class Patient < ActiveRecord::Base
   def choose_to_pay
     puts 'Would you like to pay now? (Y/N)'
 
-    input = gets.chomp.to_s.upcase
+    input = getstring.upcase
 
     if input == 'YES' || input == 'Y'
       paybills
@@ -88,7 +107,7 @@ class Patient < ActiveRecord::Base
   def choose_to_rate
     puts 'Would you like to leave a rating? (Y/N)'
 
-    input = gets.chomp.to_s.upcase
+    input = getstring.upcase
 
     if input == 'YES' || input == 'Y'
       leave_rating
@@ -125,7 +144,7 @@ class Patient < ActiveRecord::Base
   def choose_to_cancel
     puts 'Would you like to cancel an appointment? (Y/N)'
 
-        input = gets.chomp.upcase
+        input = getstring.upcase
 
         if input == 'YES' || input == 'Y'
           cancel_appointment
@@ -181,9 +200,9 @@ class Patient < ActiveRecord::Base
 
     chosen_day = schedule_array[input - 1]
 
-    puts "Why are you visiting?"
+    puts 'Why are you visiting?'
 
-    condition = gets.chomp.to_s
+    condition = getstring
 
     make_appointment(condition, doc_inst.id, chosen_day)
   end
@@ -194,7 +213,7 @@ class Patient < ActiveRecord::Base
   end
 
   def patient_option_select
-    puts "Would you like to -\n1. Make an appointment\n2. See past visits\n3. See upcoming appointments\n4. See bills paid\n5. See bills pending\n6. Exit this menu"
+    puts "Would you like to: \n1. Make an appointment\n2. See past visits\n3. See upcoming appointments\n4. See bills paid\n5. See bills pending\n6. Exit this menu"
     input = getnumber(6)
     if input == 1
       self.speclist
@@ -261,7 +280,7 @@ class Patient < ActiveRecord::Base
 
   def self.check_patient
     puts "Please provide your name, first and last."
-    input = gets.chomp
+    input = getstring
 
     patient_find = Patient.all.find do |ps|
       ps.name.downcase == input.downcase
@@ -270,9 +289,9 @@ class Patient < ActiveRecord::Base
     if patient_find == nil
       puts "You appear to be a new patient!"
       puts "How old are you?"
-      age = gets.strip
+      age = getnumber
       puts "What is your sex? (M, F, Other)"
-      sex = gets.chomp
+      sex = getstring
       Patient.create(name: input, age: age, sex: sex)
       patient_find = Patient.all.find do |ps|
         ps.name.downcase == input.downcase

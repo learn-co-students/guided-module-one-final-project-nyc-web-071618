@@ -3,6 +3,45 @@ class Doctor < ActiveRecord::Base
   has_many :patients, through: :appointments
   has_many :ratings, through: :appointments
 
+  def getnumber(max)
+    input = gets.chomp.gsub(/\D/,"").to_i
+    if input.between?(1, max)
+      return input
+    else
+      puts 'That is not a valid option'
+      getnumber(max)
+    end
+  end
+
+  def self.getnumber(max)
+    input = gets.strip.gsub(/\D/,"").to_i
+    if input.between?(1, max)
+      return input
+    else
+      puts 'That is not a valid option'
+      getnumber(max)
+    end
+  end
+
+  def getstring
+    input = gets.chomp.to_s.gsub(/[^a-zA-Z]/, "")
+    if input.class == String && !input.empty?
+      return input 
+    else
+      puts "Not a string" 
+      getstring
+    end
+  end
+  def self.getstring
+    input = gets.chomp.to_s.gsub(/[^a-zA-Z]/, "")
+    if input.class == String && !input.empty?
+      return input 
+    else
+      puts "Not a string" 
+      getstring
+    end
+  end
+
   def self.create_doctor(name, spec, cost)
     Doctor.create(name: name, specialization: spec, cost: cost)
   end
@@ -65,7 +104,7 @@ class Doctor < ActiveRecord::Base
 
   def doc_option_select
     puts "What are you here for?\n1. Your upcoming appointments\n2. Your past appointments\n3. Your income\n4. Your rating\n5. Back to start"
-    input = gets.strip.to_i
+    input = getnumber(5)
 
     if input == 1
       count = self.appointments.select do |appt|
@@ -103,12 +142,14 @@ class Doctor < ActiveRecord::Base
   end
 
   def self.stripname(name)
-    if name[0..6] == "doctor "
-      name.slice!(0,7)
-    elsif name[0..3] == "dr. "
-      name.slice!(0,4)
-    elsif name[0..2] == "dr "
+    if name[0..5] == "doctor"
+      name.slice!(0,6)
+    elsif name[0..2] == "dr."
       name.slice!(0,3)
+    elsif name[0..2] == "drd"
+      name.slice!(0,2)
+    elsif name[0..1] == "dr"
+      name.slice!(0,2)
     end
     name
   end
@@ -116,7 +157,7 @@ class Doctor < ActiveRecord::Base
   def self.check_doctor
     puts "What is your name?"
 
-    name = gets.chomp.to_s.downcase
+    name = getstring.downcase
 
     name = stripname(name)
     name = name.titleize
@@ -126,9 +167,9 @@ class Doctor < ActiveRecord::Base
     if doc_select == nil
       puts 'I see you are a new doctor, please follow the prompts to set up your profile.'
       puts 'What is your specialization?'
-      spec = gets.chomp.to_s.titleize
+      spec = getstring.titleize
       puts 'How much do you charge per visit?'
-      cost = gets.strip.to_i
+      cost = getnumber(500000)
       puts "Creating your profile"
       create_doctor(name, spec, cost)
       doc_select = Doctor.all.find { |doctor| doctor.name.downcase == name.downcase }
